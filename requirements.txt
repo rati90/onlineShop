@@ -1,0 +1,7 @@
+fastapi
+uvicorn[standard]
+sqlmodel
+fastapi[standard]
+psycopg2
+passlib
+python-jose[cryptography]
