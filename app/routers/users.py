@@ -12,14 +12,13 @@ router = APIRouter(
 
 @router.get("/me")
 def read_users_me(current_user: User = Depends(get_current_user)):
-    return {"id": current_user.id, "username": current_user.username, "email": current_user.email}
-
-
+    return {"id": current_user.user_id, "username": current_user.username, "email": current_user.email}
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 def hash_password(password: str) -> str:
     return pwd_context.hash(password)
+
 
 @router.post("/register", response_model=UserResponse)
 def register_user(user: UserCreate, db: Session = Depends(get_session)):

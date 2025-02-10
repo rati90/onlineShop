@@ -1,7 +1,9 @@
 fastapi
 uvicorn[standard]
 sqlmodel
+sqlalchemy
 fastapi[standard]
 psycopg2
 passlib
 python-jose[cryptography]
+bcrypt
