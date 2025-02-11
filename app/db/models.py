@@ -4,6 +4,12 @@ from sqlalchemy import Column, DateTime, func
 from typing import Optional
 
 
+class Admin(SQLModel, table=True):
+    id: int = Field(default=None, primary_key=True)
+    username: str = Field(unique=True, index=True)
+    hashed_password: str
+
+
 class User(SQLModel, table=True):
     user_id: Optional[int] = Field(default=None, primary_key=True)
     username: str = Field(unique=True, index=True)

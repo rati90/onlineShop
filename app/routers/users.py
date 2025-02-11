@@ -5,16 +5,20 @@ from app.db.models import User
 from app.routers.schemas import UserCreate, UserResponse
 from passlib.context import CryptContext
 from app.dependencies.auth import get_current_user
+
 router = APIRouter(
     prefix="/users",
     tags=["Users"]
 )
 
+
 @router.get("/me")
 def read_users_me(current_user: User = Depends(get_current_user)):
     return {"id": current_user.user_id, "username": current_user.username, "email": current_user.email}
 
+
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
 
 def hash_password(password: str) -> str:
     return pwd_context.hash(password)
