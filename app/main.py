@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from app.db.database import create_db_and_tables
 from app.internal import admin
-from app.routers import items, users, auth, addresses
+from app.routers import users, auth, addresses, products, categories
 from .services.admin import seed_admin_if_none_exist
 
 app = FastAPI()
@@ -9,9 +9,10 @@ app = FastAPI()
 # Include your routers
 app.include_router(auth.router)
 app.include_router(users.router)
-app.include_router(items.router)
 app.include_router(addresses.router)
+app.include_router(products.router)
 app.include_router(admin.router)
+app.include_router(categories.router)
 
 # This function seeds the first admin if none exists
 

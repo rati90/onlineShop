@@ -46,3 +46,42 @@ class AddressResponse(SQLModel):
 
     class Config:
         from_attributes = True  # Ensures compatibility with ORM models
+
+
+class CategoryBase(SQLModel):
+    name: Optional[str] = None
+    description: Optional[str] = None
+
+
+class CategoryCreate(CategoryBase):
+    name: str  # Ensure name is required for creation
+
+
+class CategoryRead(SQLModel):
+    category_id: int
+    name: str
+    description: Optional[str] = None
+
+
+class ProductBase(SQLModel):
+    name: Optional[str] = None
+    description: Optional[str] = None
+    price: Optional[float] = None
+    stock: Optional[int] = None
+    category_id: Optional[int] = None
+
+
+class ProductCreate(ProductBase):
+    name: str
+    price: float
+    stock: int
+    category_id: int
+
+
+class ProductRead(SQLModel):
+    product_id: int
+    name: str
+    description: Optional[str] = None
+    price: float
+    stock: int
+    category: CategoryRead
