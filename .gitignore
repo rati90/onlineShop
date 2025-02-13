@@ -5,3 +5,5 @@ __pycache__
 htmlcov
 .cache
 .venv
+.idea/easycode.ignore
+.idea/easycode.ignore
