@@ -19,6 +19,8 @@ class User(SQLModel, table=True):
     created_at: datetime = Field(sa_column=Column(DateTime(timezone=True), server_default=func.now()))
     updated_at: datetime = Field(sa_column=Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now()))
 
+    orders: List["Order"] = Relationship(back_populates="user")
+
 
 class Address(SQLModel, table=True):
     address_id: Optional[int] = Field(default=None, primary_key=True)
@@ -54,3 +56,16 @@ class Product(SQLModel, table=True):
     updated_at: datetime = Field(sa_column=Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now()))
 
     category: Category = Relationship(back_populates="products")
+
+
+class Order(SQLModel, table=True):
+    order_id: Optional[int] = Field(default=None, primary_key=True)
+    user_id: int = Field(foreign_key="user.user_id")
+    total_amount: float = Field(gt=0)
+    status: str = Field(default="pending", max_length=50)
+    created_at: datetime = Field(sa_column=Column(DateTime(timezone=True), server_default=func.now()))
+    updated_at: datetime = Field(sa_column=Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now()))
+
+    # Relationship to User
+    user: Optional["User"] = Relationship(back_populates="orders")
+

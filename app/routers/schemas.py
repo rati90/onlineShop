@@ -1,7 +1,7 @@
 from sqlmodel import SQLModel
 from pydantic import EmailStr
 from typing import Optional
-
+from datetime import datetime
 
 class UserCreate(SQLModel):
     username: str
@@ -85,3 +85,18 @@ class ProductRead(SQLModel):
     price: float
     stock: int
     category: CategoryRead
+
+
+class OrderCreate(SQLModel):
+    total_amount: float
+    status: Optional[str] = "pending"
+
+
+class OrderRead(SQLModel):
+    order_id: int
+    user_id: int
+    total_amount: float
+    status: str
+    created_at: datetime
+    updated_at: datetime
+
