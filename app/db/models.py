@@ -63,9 +63,33 @@ class Order(SQLModel, table=True):
     user_id: int = Field(foreign_key="user.user_id")
     total_amount: float = Field(gt=0)
     status: str = Field(default="pending", max_length=50)
+    sale_source: str = Field(default="online", max_length=10)
     created_at: datetime = Field(sa_column=Column(DateTime(timezone=True), server_default=func.now()))
     updated_at: datetime = Field(sa_column=Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now()))
 
-    # Relationship to User
     user: Optional["User"] = Relationship(back_populates="orders")
+    order_items: List["OrderItem"] = Relationship(back_populates="order")
+    payments: List["Payment"] = Relationship(back_populates="order")  # ⬅️ Add this
+
+
+class OrderItem(SQLModel, table=True):
+    order_item_id: Optional[int] = Field(default=None, primary_key=True)
+    order_id: int = Field(foreign_key="order.order_id")
+    product_id: int = Field(foreign_key="product.product_id")
+    quantity: int = Field(ge=1)
+    price_at_purchase: float = Field(gt=0)
+
+    order: Order = Relationship(back_populates="order_items")  # ⬅️ Add this
+    product: Product = Relationship()
+
+
+class Payment(SQLModel, table=True):
+    payment_id: Optional[int] = Field(default=None, primary_key=True)
+    order_id: int = Field(foreign_key="order.order_id")
+    payment_method: str = Field(max_length=50)
+    amount: float = Field(gt=0)
+    status: str = Field(default="pending", max_length=20)  # ⬅️ Change default to 'pending' for better flow
+    created_at: datetime = Field(sa_column=Column(DateTime(timezone=True), server_default=func.now()))
+
+    order: Order = Relationship(back_populates="payments")
 
